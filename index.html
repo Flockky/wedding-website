@@ -257,41 +257,6 @@ color: var(--color-cream);
 text-shadow: 0 4px 10px rgba(0,0,0,0.3);
 margin: 0;
 }
-@media (max-width: 480px) {
-.hero-overlay-text {
-bottom: -10px;
-right: -10px;
-text-align: right;
-}
-.hero-overlay-text h2 {
-font-size: 24px;
-}
-.hero-photo-container {
-flex: 0 0 60%;
-display: flex;
-/*flex-direction: column;*/
-align-items: center;
-justify-content: center;
-position: relative;
-max-width: 600px;
-width: 180px;
-height: auto;
-border-radius: 0;
-box-shadow: none;
-}
-.arch-frame {
-max-width: 250px;
-aspect-ratio: 90 / 130;
-border-radius: 90px 90px 0 0;
-box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-.arch-frame img {
-width: 100%;
-height: 100%;
-object-fit: cover;
-object-position: center top;
-}
-}
 
 /* Info Section */
 .info-section {
@@ -740,15 +705,6 @@ color: #fff; border: none; cursor: pointer; border-radius: 4px;
   50% { box-shadow: 0 4px 25px rgba(155, 123, 77, 0.5); }
   100% { box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
 }
-@media (max-width: 480px) {
-  .music-toggle {
-    width: 40px;
-    height: 40px;
-    bottom: 15px;
-    right: 15px;
-    font-size: 16px;
-  }
-}
 
 /* ========================================= */
 /* --- АДАПТАЦИЯ --- */
@@ -770,6 +726,7 @@ gap: 20px;
 .calendar-container { width: 260px; min-width: 240px; }
 .venue-text { text-align: center; padding-left: 10px}
 }
+
 @media (max-width: 480px) {
 :root {
 --fs-names: 32px;
@@ -802,57 +759,78 @@ gap: 20px;
 body { font-size: 14px; }
 section { padding-left: 10px !important; padding-right: 10px !important; }
 .hero { padding: 20px 5px; min-height: 90vh; }
+
+/* === ИСПРАВЛЕНИЕ ДЛЯ 375-425px === */
 .hero-content {
-flex-direction: column;
-gap: 20px;  
-justify-content: center;
-align-items: center;
+  /* flex-direction: column;  ← УБРАНО: теперь элементы в строке */
+  flex-wrap: wrap;           /* ← ДОБАВЛЕНО: перенос при нехватке места */
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
 }
 .hero-text {
-flex: 0 0 10%;
-color: var(--color-cream);
-text-align: center;
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-padding-right: 20px;
+  flex: 0 0 45%;             /* ← Увеличена ширина текста */
+  color: var(--color-cream);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-right: 5px;
 }
 .hero-names { margin-bottom: 15px; }
 .hero-names .ampersand { font-size: 18px; margin: 0 4px; top: -2px; }
 .hero-star-img { width: 20px; height: 20px; margin: 10px auto; }
+
 .hero-photo-container {
-flex: 0 0 60%;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-position: relative;
-max-width: 600px;
-width: 180px; height: 225px; border-radius: 90px;
+  flex: 0 0 45%;             /* ← Уменьшена ширина фото */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  max-width: none;
+  width: 45%;
+  min-width: 120px;          /* ← Минимальная ширина */
 }
 .arch-frame {
-max-width: 250px;
-border-radius: 125px 125px 0 0;
+  max-width: 100%;
+  aspect-ratio: 473 / 600;
+  border-radius: 90px 90px 0 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
+.arch-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+.hero-overlay-text {
+  bottom: -10px;
+  right: -10px;
+  text-align: right;
+}
+.hero-overlay-text h2 {
+  font-size: 14px;
+}
+
 .info-section { padding: 30px 5px; }
-.info-container {
-gap: 10px;
-}
+.info-container { gap: 10px; }
 .info-text p { margin-bottom: 10px; }
 .info-date { font-size: 16px; }
 .calendar-container {
-width: 130px;
-min-width: 130px;
-padding: 10px 5px;
+  width: 130px;
+  min-width: 130px;
+  padding: 10px 5px;
 }
 .calendar-day { height: 20px; }
 .calendar-day.highlight { width: 20px; height: 20px; }
+
 .venue-section {
-flex-direction: row;
-gap: 10px;
-padding: 30px 5px;
-align-items: flex-start;
+  flex-direction: row;
+  gap: 10px;
+  padding: 30px 5px;
+  align-items: flex-start;
 }
 .venue-text { flex: 1; text-align: left; min-width: 0; }
 .venue-text h2 { margin-bottom: 10px; }
@@ -861,25 +839,50 @@ align-items: flex-start;
 .venue-info { flex: 1; text-align: right; min-width: 0; margin-top: 20px; }
 .venue-address { margin-bottom: 10px; font-size: 10px; }
 .btn { padding: 8px 15px; font-size: 9px; }
+
 .dresscode-gallery { gap: 10px; }
 .dresscode-item { width: 30%; max-width: none; }
 .gallery-wrapper { aspect-ratio: 2/3; }
 .gallery-btn { width: 25px; height: 25px; font-size: 14px; }
 .color-circle { width: 30px; height: 30px; }
+
 .timeline-line { display: none; }
 .timeline { gap: 10px; flex-wrap: wrap; }
 .timeline-item { min-width: 80px; }
 .timeline-star-img {
-width: 25px;
-height: 25px;
-margin-bottom: 10px;
+  width: 25px;
+  height: 25px;
+  margin-bottom: 10px;
 }
+
 .countdown { gap: 10px; }
 .countdown-item { min-width: 50px; }
 .countdown-photo { width: 180px; height: 225px; border-radius: 90px; }
+
 .rsvp-form-container { padding: 20px 10px; }
 .custom-control { font-size: 11px; }
 .custom-control input { width: 14px; height: 14px; }
+}
+
+/* === ДОП. АДАПТАЦИЯ ДЛЯ ОЧЕНЬ УЗКИХ ЭКРАНОВ (<360px) === */
+@media (max-width: 360px) {
+  .hero-content {
+    flex-direction: column;  /* ← Только здесь разрешаем вертикаль */
+  }
+  .hero-text, .hero-photo-container {
+    flex: 0 0 100%;
+    width: 100%;
+    max-width: 100%;
+  }
+  .arch-frame {
+    max-width: 200px;
+    border-radius: 100px 100px 0 0;
+  }
+  .hero-overlay-text {
+    position: static;
+    text-align: center;
+    margin-top: 10px;
+  }
 }
 </style>
 </head>
