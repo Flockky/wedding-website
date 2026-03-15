@@ -254,6 +254,8 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; }
     padding: 60px 20px;
     width: 100%;
     overflow: visible;
+    border-radius: 200px 200px 0 0;
+    background-color: var(--color-gold) !important;
 }
 
 .info-container {
@@ -472,6 +474,7 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; }
     text-align: center;
     width: 100%;
     overflow: visible;
+    background-color: var(--color-cream) !important;
 }
 .timeline-section h2 {
     font-size: var(--fs-timeline-title);
@@ -788,11 +791,12 @@ image-rendering: crisp-edges; }
         overflow-x: hidden;
         overflow-y: auto; /* Единый скролл */
         width: 100%;
+        background-color: #3D4D3A !important; 
     }
 
     /* === ГЛАВНОЕ ИСПРАВЛЕНИЕ: СЕКЦИИ ТЕКУТ ПОТОКОМ === */
     section {
-        min-height: 800px !important;
+        min-height: auto !important;
         height: auto !important;
         display: block !important; /* Убираем Flex у самой секции */
         padding: 40px 15px !important;
@@ -1046,7 +1050,7 @@ image-rendering: crisp-edges; }
 
     /* === DRESS CODE SECTION === */
     .dresscode-section {
-        background-color: var(--color-dark-green) !important;
+        background-color: #3D4D3A !important; 
         display: block !important; /* Ключевое изменение: блок, а не флекс-контейнер с центрированием */
         padding: 40px 15px !important;
     }
@@ -1109,7 +1113,9 @@ image-rendering: crisp-edges; }
     .timeline-section {
         background-color: var(--color-cream) !important;
         display: block !important;
-        padding: 40px 15px !important;
+        padding: 10px 15px 40px 15px !important; 
+        border-radius: 200px 200px 0 0 !important;
+        overflow: hidden !important; 
     }
 
     .timeline-section h2 {
@@ -1152,7 +1158,7 @@ image-rendering: crisp-edges; }
         display: block !important;
         position: relative !important;
         z-index: 1 !important;
-        margin-bottom: 35px !important;
+        margin-bottom: 15px !important;
         width: 100% !important;
     }
 
@@ -1214,7 +1220,7 @@ image-rendering: crisp-edges; }
     }
 
     .countdown {
-        gap: 20px !important;
+        gap: 7px !important;
         margin-bottom: 35px !important;
         flex-wrap: wrap !important;
         justify-content: center !important;
@@ -1363,7 +1369,7 @@ image-rendering: crisp-edges; }
 <section class="info-section">
 <div class="info-container">
 <div class="info-text">
-<h2 class="animate-on-scroll heading">Дорогие наши<br>друзья и родные!</h2>
+<h2 class="animate-on-scroll heading">⠀<br>⠀<br>Дорогие наши<br>друзья и родные!</h2>
 <p class="animate-on-scroll delay-1">
 Это официальное приглашение<br> на нашу свадьбу!
 А получили вы его <br>потому, что мы очень хотим видеть<br>вас
@@ -1438,7 +1444,7 @@ image-rendering: crisp-edges; }
 </section>
 <!-- Timeline Section -->
 <section class="timeline-section">
-<h2 class="animate-on-scroll heading">Программа дня</h2>
+<h2 class="animate-on-scroll heading">⠀<br>⠀<br>Программа дня</h2>
 <div class="timeline">
 <div class="timeline-line"></div>
 <div class="timeline-item delay-1">
