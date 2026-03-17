@@ -700,32 +700,99 @@ document.getElementById('seconds').textContent = String(seconds).padStart(2, '0'
 setInterval(updateCountdown, 1000); updateCountdown();
 
 async function submitForm(e) {
-e.preventDefault();
-const form = document.getElementById('weddingForm');
-const submitBtn = form.querySelector('.btn-submit');
-const originalText = submitBtn.textContent;
-submitBtn.textContent = "Отправка..."; submitBtn.disabled = true;
-try {
-const fullNameInput = form.querySelector('input[name="fullname"]');
-const fullName = fullNameInput ? fullNameInput.value.trim() : '';
-const attendanceRadio = form.querySelector('input[name="attendance"]:checked');
-const attendance = attendanceRadio ? attendanceRadio.value : '';
-const drinkCheckboxes = form.querySelectorAll('input[name="drink"]:checked');
-const drinks = Array.from(drinkCheckboxes).map(cb => cb.nextElementSibling.textContent.trim());
-if (!fullName) { alert('Пожалуйста, введите ваше имя.'); submitBtn.textContent = originalText; submitBtn.disabled = false; return; }
-const payload = { name: fullName, attendance: attendance, drinks: drinks };
-const API_URL = 'http://10.8.0.79:8000/api/rsvp';
-const response = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-if (response.ok) { document.getElementById('successModal').style.display = 'flex'; form.reset(); }
-else {
-let errorMsg = 'Не удалось отправить заявку';
-try { const errorData = await response.json(); if (errorData.detail) errorMsg = errorData.detail; } catch (e) {}
-alert('Ошибка: ' + errorMsg);
+    e.preventDefault();
+    const form = document.getElementById('weddingForm');
+    const submitBtn = form.querySelector('.btn-submit');
+    const originalText = submitBtn.textContent;
+    
+    // Блокируем кнопку
+    submitBtn.textContent = "Отправка..."; 
+    submitBtn.disabled = true;
+
+    try {
+        // 1. Сбор данных из формы
+        const fullNameInput = form.querySelector('input[name="fullname"]');
+        const fullName = fullNameInput ? fullNameInput.value.trim() : '';
+        
+        const attendanceRadio = form.querySelector('input[name="attendance"]:checked');
+        const attendanceStatus = attendanceRadio ? (attendanceRadio.value === 'yes' ? '✅ Придет' : '❌ Не придет') : 'Не указано';
+        
+        const drinkCheckboxes = form.querySelectorAll('input[name="drink"]:checked');
+        let drinksList = Array.from(drinkCheckboxes).map(cb => cb.nextElementSibling.textContent.trim());
+        const drinksText = drinksList.length > 0 ? drinksList.join(', ') : 'Нет предпочтений';
+
+        if (!fullName) { 
+            alert('Пожалуйста, введите ваше имя.'); 
+            resetButton();
+            return; 
+        }
+
+        // 2. Формирование красивого сообщения для Telegram
+        // Используем HTML-разметку для жирного шрифта и переносов
+        const messageText = `
+📩 <b>Новая анкета гостя!</b>
+
+👤 <b>Гость:</b> ${escapeHtml(fullName)}
+📅 <b>Статус:</b> ${attendanceStatus}
+🥂 <b>Напитки:</b> ${escapeHtml(drinksText)}
+
+<i>Отправлено с сайта приглашения.</i>
+        `.trim();
+
+        // 3. НАСТРОЙКИ TELEGRAM (Вставь свои данные сюда!)
+        const TG_BOT_TOKEN = '8603156855:AAFkUY96oavXly4cRnhPJNj5e86CgBe3PzA'; // Например: '602345678:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw'
+        const TG_CHAT_ID = '-5235851049';   // ID твоего канала (обязательно с минусом и 100 в начале, если это супергруппа/канал)
+
+        // 4. Отправка запроса
+        const url = `https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`;
+        
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                chat_id: TG_CHAT_ID,
+                text: messageText,
+                parse_mode: 'HTML' // Важно: разрешает использование тегов <b>, <i>
+            })
+        });
+
+        const result = await response.json();
+
+        if (result.ok) {
+            // Успех
+            document.getElementById('successModal').style.display = 'flex'; 
+            form.reset(); 
+        } else {
+            // Ошибка от Telegram (например, неверный токен или бот не админ)
+            console.error('Telegram Error:', result);
+            alert('Ошибка отправки: ' + (result.description || 'Проверьте настройки бота'));
+        }
+
+    } catch (error) { 
+        console.error('Network Error:', error); 
+        alert('Ошибка соединения с интернетом.'); 
+    } finally { 
+        resetButton();
+    }
+
+    function resetButton() {
+        submitBtn.textContent = originalText; 
+        submitBtn.disabled = false; 
+    }
 }
-} catch (error) { console.error('Error:', error); alert('Ошибка соединения (' + error.message + ').'); }
-finally { submitBtn.textContent = originalText; submitBtn.disabled = false; }
+
+// Вспомогательная функция для защиты от поломки верстки, если гость введет спецсимволы
+function escapeHtml(text) {
+    if (!text) return text;
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 }
-function closeModal() { document.getElementById('successModal').style.display = 'none'; }
 
 // Музыка
 document.addEventListener('DOMContentLoaded', () => {
