@@ -753,8 +753,8 @@ async function submitForm(e) {
     `.trim();
 
     // --- НАСТРОЙКИ TELEGRAM ---
-    const BOT_TOKEN = '${ TELEGRAM_BOT_TOKEN }'; // Или просто ${TELEGRAM_BOT_TOKEN} для envsubst
-    const CHAT_ID = '${ TELEGRAM_CHAT_ID }';
+    const BOT_TOKEN = '${ TOKEN }'; // Или просто ${TELEGRAM_BOT_TOKEN} для envsubst
+    const CHAT_ID = '${ CHAT }';
 
     // --- МГНОВЕННЫЙ ОТКЛИК ДЛЯ ПОЛЬЗОВАТЕЛЯ ---
     submitBtn.textContent = "Отправлено! ✅"; 
